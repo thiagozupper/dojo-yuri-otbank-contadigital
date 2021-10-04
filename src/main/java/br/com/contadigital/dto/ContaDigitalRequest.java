@@ -21,4 +21,7 @@ public class ContaDigitalRequest {
     public ContaDigital toModel() {
         return new ContaDigital(conta, idCliente);
     }
+
+
+
 }
