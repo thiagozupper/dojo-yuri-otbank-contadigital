@@ -17,11 +17,15 @@ public class ContaDigitalRequest {
         this.idCliente = idCliente;
     }
 
-
     public ContaDigital toModel() {
         return new ContaDigital(conta, idCliente);
     }
 
+    public Long getConta() {
+        return conta;
+    }
 
-
+    public Long getIdCliente() {
+        return idCliente;
+    }
 }

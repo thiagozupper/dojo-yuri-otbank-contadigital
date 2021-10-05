@@ -13,7 +13,7 @@ import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/contas")
+@RequestMapping("/api/contas")
 public class ContaDigitalController {
 
     private ContaDigitalRepository contaDigitalRepository;
@@ -48,7 +48,7 @@ public class ContaDigitalController {
     public ResponseEntity<?> debitarValor(@RequestBody @Valid DebitoCreditoRequest request){
         Optional<ContaDigital> supostaContaDigital = contaDigitalRepository.findByConta(request.getConta());
 
-        if(!supostaContaDigital.isPresent()){
+        if(supostaContaDigital.isEmpty()){
             return ResponseEntity.notFound().build();
         }
 
