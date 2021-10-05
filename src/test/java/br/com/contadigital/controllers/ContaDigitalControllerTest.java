@@ -95,13 +95,24 @@ class ContaDigitalControllerTest {
     }
 
     @Test
-    void NaoDeveriaDebitarSaldoContaInexistente() throws Exception {
+    void naoDeveriaDebitarSaldoContaInexistente() throws Exception {
         DebitoCreditoRequest contaInvalida = new DebitoCreditoRequest(2L, new BigDecimal("100"));
         String jsonBody = objectMapper.writeValueAsString(contaInvalida);
         mockMvc.perform(put("/api/contas/debito")
                         .content(jsonBody)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void naoDeveriaDebitarSaldoContaQuandoDebitoMaiorQueSaldo() throws Exception {
+        DebitoCreditoRequest request = new DebitoCreditoRequest(1L, new BigDecimal("100"));
+
+        String jsonBody = objectMapper.writeValueAsString(request);
+        mockMvc.perform(put("/api/contas/debito")
+                        .content(jsonBody)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnprocessableEntity());
     }
 
 }

@@ -59,7 +59,7 @@ public class ContaDigitalController {
             return ResponseEntity.ok().build();
         }
 
-        return ResponseEntity.badRequest().build();
+        return ResponseEntity.unprocessableEntity().build();
     }
 
 
