@@ -1,5 +1,7 @@
 package br.com.contadigital.models;
 
+import org.springframework.http.ResponseEntity;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -40,12 +42,18 @@ public class ContaDigital {
         return saldo;
     }
 
-    public void creditarvalor(BigDecimal valor){
+    public void creditarvalor(BigDecimal valor) {
         this.saldo = this.saldo.add(valor);
     }
 
-    public void debitarvalor(BigDecimal valor){
-        this.saldo = this.saldo.subtract(valor);
+    public boolean debitarvalor(BigDecimal valor) {
+
+        if (valor.compareTo(this.saldo) <= 0) {
+            this.saldo = this.saldo.subtract(valor);
+            return true;
+        }
+        return false;
     }
+
 
 }

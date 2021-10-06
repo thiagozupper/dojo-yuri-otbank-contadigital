@@ -13,7 +13,7 @@ import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/contas")
+@RequestMapping("api/contas")
 public class ContaDigitalController {
 
     private ContaDigitalRepository contaDigitalRepository;
@@ -23,7 +23,7 @@ public class ContaDigitalController {
     }
 
     @PostMapping("/novo")
-    public ResponseEntity<?> cadastrarConta(@RequestBody @Valid ContaDigitalRequest request){
+    public ResponseEntity<?> cadastrarConta(@RequestBody @Valid ContaDigitalRequest request) {
         ContaDigital contaDigital = request.toModel();
         contaDigitalRepository.save(contaDigital);
         return ResponseEntity.ok().build();
@@ -31,12 +31,8 @@ public class ContaDigitalController {
 
     @Transactional
     @PutMapping("/credito")
-    public ResponseEntity<?> creditarValor(@RequestBody @Valid DebitoCreditoRequest request){
+    public ResponseEntity<?> creditarValor(@RequestBody @Valid DebitoCreditoRequest request) {
         Optional<ContaDigital> supostaContaDigital = contaDigitalRepository.findByConta(request.getConta());
-
-        if(!supostaContaDigital.isPresent()){
-            return ResponseEntity.notFound().build();
-        }
 
         ContaDigital contaDigital = supostaContaDigital.get();
         contaDigital.creditarvalor(request.getValorCredito());
@@ -45,20 +41,16 @@ public class ContaDigitalController {
 
     @Transactional
     @PutMapping("/debito")
-    public ResponseEntity<?> debitarValor(@RequestBody @Valid DebitoCreditoRequest request){
+    public ResponseEntity<?> debitarValor(@RequestBody @Valid DebitoCreditoRequest request) {
         Optional<ContaDigital> supostaContaDigital = contaDigitalRepository.findByConta(request.getConta());
 
-        if(supostaContaDigital.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }
 
         ContaDigital contaDigital = supostaContaDigital.get();
 
-        if(request.getValorCredito().compareTo(contaDigital.getSaldo()) <= 0){
-            contaDigital.debitarvalor(request.getValorCredito());
+        boolean debitaValor = contaDigital.debitarvalor(request.getValorCredito());
+        if (debitaValor) {
             return ResponseEntity.ok().build();
         }
-
         return ResponseEntity.unprocessableEntity().build();
     }
 

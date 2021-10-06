@@ -1,12 +1,15 @@
 package br.com.contadigital.dto;
 
 import br.com.contadigital.models.ContaDigital;
+import br.com.contadigital.util.validator.ExistsId;
 
 import javax.validation.constraints.NotNull;
 
 public class ContaDigitalRequest {
 
+
     @NotNull
+    @ExistsId(domainClass = ContaDigital.class, fieldName = "conta")
     private Long conta;
 
     @NotNull
